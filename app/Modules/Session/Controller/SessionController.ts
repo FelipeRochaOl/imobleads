@@ -18,9 +18,32 @@ export default class SessionsController {
       return response.unauthorized(responseError)
     }
 
-    const token = await auth.use('api').attempt(email, password, {
+    const tokenJson = await auth.use('api').attempt(email, password, {
       expiresIn: '1days',
     })
-    return response.ok(token)
+
+    return response.ok(tokenJson)
+  }
+
+  public async update({ auth, request, response }: HttpContextContract) {
+    let responseError: IResponseError = { message: 'User not found in database', success: false }
+    const id = request.input('id')
+    const user = await User.find(id)
+
+    if (!user) {
+      return response.unauthorized(responseError)
+    }
+
+    if (auth.use('api').isLoggedOut) {
+      const token = await auth.use('api').generate(user)
+      return response.ok(token)
+    }
+
+    return response.ok({ token: auth.use('api').token })
+  }
+
+  public async delete({ auth, response }) {
+    await auth.use('api').revoke()
+    return response.ok({ message: { revoked: true }, success: true })
   }
 }
