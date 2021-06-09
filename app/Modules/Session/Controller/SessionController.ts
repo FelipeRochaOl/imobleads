@@ -34,17 +34,24 @@ export default class SessionsController {
       return response.unauthorized(responseError)
     }
 
-    if (auth.use('api').isLoggedOut) {
-      const token = await auth.use('api').generate(user)
-      return response.ok(token)
+    await auth.use('api').check()
+
+    if (!auth.use('api').isLoggedIn) {
+      responseError.message = 'Token is already expired'
+      return response.status(400).badRequest(responseError)
     }
 
-    responseError.message = 'User is already logged in with valid token'
-    return response.status(400).badRequest(responseError)
+    const token = await auth.use('api').generate(user)
+    return response.ok(token)
   }
 
-  public async delete({ auth, response }) {
-    await auth.use('api').revoke()
-    return response.ok({ message: { revoked: true }, success: true })
+  public async delete({ auth, response }: HttpContextContract) {
+    try {
+      await auth.use('api').revoke()
+      return response.ok({ message: 'User has been logged out', success: true })
+    } catch {
+      let responseError: IResponseError = { message: 'Error when logging out', success: false }
+      return response.badRequest(responseError)
+    }
   }
 }
