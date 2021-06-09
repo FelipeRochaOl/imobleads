@@ -1,6 +1,6 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
-  Route.resource('/user', 'UserController').except(['edit', 'store', 'show'])
-  Route.get('/user/:id?', 'UserController.show').as('user.show')
+  Route.resource('users', 'User/Controller/UserController').except(['edit', 'store', 'show'])
+  Route.get('/users/:id?', 'User/Controller/UserController.show').as('user.show')
 }).prefix('api')
