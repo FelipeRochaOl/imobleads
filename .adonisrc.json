@@ -4,7 +4,8 @@
     "./commands",
     "@adonisjs/core/build/commands",
     "@adonisjs/repl/build/commands",
-    "@adonisjs/lucid/build/commands"
+    "@adonisjs/lucid/build/commands",
+    "@adonisjs/bouncer/build/commands"
   ],
   "exceptionHandlerNamespace": "App/Exceptions/Handler",
   "aliases": {
@@ -18,31 +19,23 @@
     "./start/kernel",
     {
       "file": "./start/events",
-      "environment": [
-        "console",
-        "repl",
-        "web"
-      ]
+      "environment": ["console", "repl", "web"]
     },
     {
       "file": "./start/redis",
-      "environment": [
-        "console",
-        "repl",
-        "web"
-      ]
-    }
+      "environment": ["console", "repl", "web"]
+    },
+    "./start/bouncer"
   ],
   "providers": [
     "./providers/AppProvider",
     "@adonisjs/core",
     "@adonisjs/lucid",
     "@adonisjs/auth",
-    "@adonisjs/redis"
+    "@adonisjs/redis",
+    "@adonisjs/bouncer"
   ],
-  "aceProviders": [
-    "@adonisjs/repl"
-  ],
+  "aceProviders": ["@adonisjs/repl"],
   "namespaces": {
     "httpControllers": "App/Modules",
     "httpMiddlewares": "App/Modules",

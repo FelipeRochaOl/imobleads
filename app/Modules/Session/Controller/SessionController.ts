@@ -5,7 +5,10 @@ import { IResponseError } from 'App/Shared/Interfaces/IResponseError'
 
 export default class SessionsController {
   public async store({ auth, request, response }: HttpContextContract) {
-    let responseError: IResponseError = { message: 'Invalid credentials', success: false }
+    let responseError: IResponseError = {
+      message: 'Invalid credentials',
+      success: false,
+    }
     const { email, password } = request.body()
     const user = await User.findBy('email', email)
 
@@ -26,7 +29,10 @@ export default class SessionsController {
   }
 
   public async update({ auth, request, response }: HttpContextContract) {
-    let responseError: IResponseError = { message: 'User not found in database', success: false }
+    let responseError: IResponseError = {
+      message: 'User not found in database',
+      success: false,
+    }
     const id = request.input('id')
     const user = await User.find(id)
 
@@ -50,7 +56,10 @@ export default class SessionsController {
       await auth.use('api').revoke()
       return response.ok({ message: 'User has been logged out', success: true })
     } catch {
-      let responseError: IResponseError = { message: 'Error when logging out', success: false }
+      let responseError: IResponseError = {
+        message: 'Error when logging out',
+        success: false,
+      }
       return response.badRequest(responseError)
     }
   }

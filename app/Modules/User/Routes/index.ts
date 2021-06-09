@@ -8,7 +8,9 @@ Route.group(() => {
       'show',
       'store',
     ])
-    Route.get('/users/:id?', 'User/Controller/UserController.show').as('user.show')
+    Route.get('/users/:id?', 'User/Controller/UserController.show').as(
+      'user.show'
+    )
   }).middleware('auth')
 
   Route.post('/users', 'User/Controller/UserController.store').as('user.store')
