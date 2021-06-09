@@ -11,8 +11,6 @@ services:
       - POSTGRESQL_PASSWORD=docker
       - POSTGRESQL_USERNAME=postgres
       - POSTGRESQL_DATABASE=imobleads
-    volumes:
-      - ~/app/gobarber/src/database:/bitnami/postgresql
 
   redis:
     image: bitnami/redis:latest
