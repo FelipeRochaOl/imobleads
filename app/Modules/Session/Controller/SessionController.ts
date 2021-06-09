@@ -18,7 +18,9 @@ export default class SessionsController {
       return response.unauthorized(responseError)
     }
 
-    const token = await auth.use('api').attempt(email, password)
+    const token = await auth.use('api').attempt(email, password, {
+      expiresIn: '1days',
+    })
     return response.ok(token)
   }
 }
