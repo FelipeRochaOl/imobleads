@@ -1,21 +1,24 @@
+import Hash from '@ioc:Adonis/Core/Hash'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import User from 'App/Modules/User/Models/User'
+import { IResponseError } from 'App/Shared/Interfaces/IResponseError'
 
 export default class SessionsController {
-  public async index({}: HttpContextContract) {}
+  public async store({ auth, request, response }: HttpContextContract) {
+    let responseError: IResponseError = { message: 'Invalid credentials', success: false }
+    const { email, password } = request.body()
+    const user = await User.findBy('email', email)
 
-  public async create({ auth, request, response }: HttpContextContract) {
-    console.log(auth, request, response)
+    if (!user) {
+      return response.unauthorized(responseError)
+    }
 
-    const email = request.input('email')
-    const password = request.input('password')
+    const compareHash = await Hash.verify(user.password, password)
+    if (!compareHash) {
+      return response.unauthorized(responseError)
+    }
 
     const token = await auth.use('api').attempt(email, password)
     return response.ok(token)
   }
-
-  public async show({}: HttpContextContract) {}
-
-  public async update({}: HttpContextContract) {}
-
-  public async destroy({}: HttpContextContract) {}
 }
