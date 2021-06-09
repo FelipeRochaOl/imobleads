@@ -42,5 +42,10 @@
   ],
   "aceProviders": [
     "@adonisjs/repl"
-  ]
+  ],
+  "namespaces": {
+    "httpControllers": "App/Modules",
+    "httpMiddlewares": "App/Modules",
+    "httpModels": "App/Modules"
+  }
 }
