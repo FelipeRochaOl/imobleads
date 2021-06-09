@@ -1,5 +1,4 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { IResponseError } from 'App/Shared/Interfaces/IResponseError'
 import User from 'App/Modules/User/Models/User'
 
 export default class UserController {
@@ -10,13 +9,14 @@ export default class UserController {
   }
 
   public async store({ request, response }: HttpContextContract) {
-    const { email, password } = request.body()
+    const { email, password, role } = request.body()
     const newUser = await User.create({
       email,
       password,
+      role,
     })
 
-    return response.redirect().toRoute('user.show', [newUser.id])
+    return response.ok(newUser)
   }
 
   public async show({ auth, request, response }: HttpContextContract) {

@@ -28,7 +28,7 @@ export default class AuthMiddleware {
   }
 
   public async handle(
-    { auth, request }: HttpContextContract,
+    { auth }: HttpContextContract,
     next: () => Promise<void>,
     customGuards: (keyof GuardsList)[]
   ) {

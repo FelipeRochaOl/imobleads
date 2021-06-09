@@ -18,6 +18,9 @@ export default class User extends BaseModel {
   @column()
   public rememberMeToken?: string
 
+  @column()
+  public role: ['admin', 'corretor', 'imobiliaria', 'cliente']
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
@@ -32,7 +35,8 @@ export default class User extends BaseModel {
   }
   @beforeSave()
   public static async uuidGenerate(user: User) {
-    user.id = uuid()
-    console.log(user.id)
+    if (user.$dirty.id || !user.id) {
+      user.id = uuid()
+    }
   }
 }
