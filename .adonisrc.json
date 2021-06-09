@@ -18,20 +18,9 @@
     "./start/kernel",
     {
       "file": "./start/events",
-      "environment": [
-        "console",
-        "repl",
-        "web"
-      ]
+      "environment": ["console", "repl", "web"]
     }
   ],
-  "providers": [
-    "./providers/AppProvider",
-    "@adonisjs/core",
-    "@adonisjs/lucid",
-    "@adonisjs/auth"
-  ],
-  "aceProviders": [
-    "@adonisjs/repl"
-  ]
+  "providers": ["./providers/AppProvider", "@adonisjs/core", "@adonisjs/lucid", "@adonisjs/auth"],
+  "aceProviders": ["@adonisjs/repl"]
 }
