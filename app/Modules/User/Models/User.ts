@@ -1,10 +1,13 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, BaseModel } from '@ioc:Adonis/Lucid/Orm'
+import { uuid } from 'uuidv4'
 
 export default class User extends BaseModel {
+  public static selfAssignPrimaryKey = true
+
   @column({ isPrimary: true })
-  public id: number
+  public id: string
 
   @column()
   public email: string
@@ -26,5 +29,10 @@ export default class User extends BaseModel {
     if (user.$dirty.password) {
       user.password = await Hash.make(user.password)
     }
+  }
+  @beforeSave()
+  public static async uuidGenerate(user: User) {
+    user.id = uuid()
+    console.log(user.id)
   }
 }
