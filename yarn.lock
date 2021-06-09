@@ -54,7 +54,7 @@
 
 "@adonisjs/auth@^8.0.5":
   version "8.0.5"
-  resolved "https://registry.npmjs.org/@adonisjs/auth/-/auth-8.0.5.tgz"
+  resolved "https://registry.yarnpkg.com/@adonisjs/auth/-/auth-8.0.5.tgz#1088bc6495cc5409750b727ae7422f8f47524792"
   integrity sha512-iEc3+WV+jFU60KITDPQJRkVAjkzBb9omvjDhfSYjYQU5Fw9NWjcFZzeAgqkF5cdPPKvD6Kfb9i9anppkrOCiSw==
   dependencies:
     "@poppinss/hooks" "^3.0.4"
