@@ -20,7 +20,15 @@ export default class UserController {
   public async show({ request, response }: HttpContextContract) {
     const qs = request.qs()
     const id = request.param('id')
-    return response.ok({ qs, id })
+
+    var user = id ? await User.find(id) : undefined
+
+    if (user) {
+      return response.ok(user)
+    }
+
+    var user = qs ? await User.findBy('email', qs.email) : undefined
+    return response.ok(user)
   }
 
   public async update({ request, response }: HttpContextContract) {
