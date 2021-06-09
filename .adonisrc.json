@@ -39,6 +39,7 @@
   "namespaces": {
     "httpControllers": "App/Modules",
     "httpMiddlewares": "App/Modules",
-    "httpModels": "App/Modules"
+    "httpModels": "App/Modules",
+    "policies": "App/Modules"
   }
 }
