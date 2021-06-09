@@ -1,25 +1,27 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import User from '../Models/User'
+import { IResponseError } from 'App/Shared/Interfaces/IResponseError'
+import User from 'App/Modules/User/Models/User'
 
 export default class UserController {
   public async index({ response }: HttpContextContract) {
+    // auth.user?.$original.id
     const user = await User.all()
     return response.ok(user)
   }
 
-  public async create({ request, response }: HttpContextContract) {
+  public async store({ request, response }: HttpContextContract) {
     const { email, password } = request.body()
-    await User.create({
+    const newUser = await User.create({
       email,
       password,
     })
 
-    return response.redirect().toRoute('user.index')
+    return response.redirect().toRoute('user.show', [newUser.id])
   }
 
-  public async show({ request, response }: HttpContextContract) {
+  public async show({ auth, request, response }: HttpContextContract) {
     const qs = request.qs()
-    const id = request.param('id')
+    const id = request.param('id') || auth.user?.$original.id
 
     var user = id ? await User.find(id) : undefined
 
@@ -35,8 +37,8 @@ export default class UserController {
     const { id } = request.params()
     const data = request.body()
     const user = await User.findOrFail(id)
-    await user.merge({ ...data }).save()
-    response.redirect().toRoute('user.show', [id])
+    await user.merge(data).save()
+    return response.ok(user)
   }
 
   public async destroy({ request, response }: HttpContextContract) {
