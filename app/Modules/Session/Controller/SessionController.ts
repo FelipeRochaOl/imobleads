@@ -39,7 +39,8 @@ export default class SessionsController {
       return response.ok(token)
     }
 
-    return response.ok({ token: auth.use('api').token })
+    responseError.message = 'User is already logged in with valid token'
+    return response.status(400).badRequest(responseError)
   }
 
   public async delete({ auth, response }) {
