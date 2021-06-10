@@ -42,9 +42,13 @@ export default class UserController {
   }
 
   public async destroy({ request, response }: HttpContextContract) {
-    const { id } = request.params()
-    const user = await User.findOrFail(id)
-    await user.delete()
-    response.json({ success: user.$isDeleted })
+    try {
+      const { id } = request.params()
+      const user = await User.findOrFail(id)
+      await user.softDelete()
+      return response.json({ success: true })
+    } catch {
+      return response.json({ success: false })
+    }
   }
 }
