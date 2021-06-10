@@ -19,9 +19,9 @@ export default class UserController {
     return response.ok(newUser)
   }
 
-  public async show({ auth, request, response }: HttpContextContract) {
+  public async show({ request, response }: HttpContextContract) {
     const qs = request.qs()
-    const id = request.param('id') || auth.user?.$original.id
+    const id = request.param('id')
 
     var user = id ? await User.find(id) : undefined
 

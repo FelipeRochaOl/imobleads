@@ -12,10 +12,4 @@ export default class UserPolicy extends BasePolicy {
   public async viewAll() {
     return false
   }
-
-  public async view(user: User, auth: AuthContract) {
-    if (!auth.user) return false
-
-    return auth.user.id === user.id
-  }
 }
