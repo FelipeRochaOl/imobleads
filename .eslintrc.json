@@ -10,7 +10,6 @@
         "prefix": ["I"],
         "format": ["PascalCase"]
       }
-    ],
-    "max-len": ["error", { "code": 80 }]
+    ]
   }
 }
