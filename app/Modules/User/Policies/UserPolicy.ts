@@ -1,4 +1,3 @@
-import { AuthContract } from '@ioc:Adonis/Addons/Auth'
 import { BasePolicy } from '@ioc:Adonis/Addons/Bouncer'
 import User from 'App/Modules/User/Models/User'
 

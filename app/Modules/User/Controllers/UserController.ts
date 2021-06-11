@@ -1,54 +1,75 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import User from 'App/Modules/User/Models/User'
+import { container } from 'tsyringe'
+
+import FindAllUsersServices from '../Services/FindAllUsersService'
+import CreateUsersService from '../Services/CreateUsersService'
+import FindUserService from '../Services/FindUserService'
+import UpdateUsersService from '../Services/UpdateUsersService'
+import DeleteUsersService from '../Services/DeleteUsersService'
 
 export default class UserController {
-  public async index({ bouncer, response }: HttpContextContract) {
-    await bouncer.with('UserPolicy').authorize('viewAll')
-    const user = await User.all()
-    return response.ok(user)
+  public async index({ response }: HttpContextContract) {
+    const findAllUsersServices = container.resolve(FindAllUsersServices)
+    const users = await findAllUsersServices.execute()
+
+    return response.ok({
+      message: 'User list found successfully',
+      success: true,
+      data: users,
+    })
   }
 
   public async store({ request, response }: HttpContextContract) {
     const { email, password, role } = request.body()
-    const newUser = await User.create({
-      email,
-      password,
-      role,
-    })
 
-    return response.ok(newUser)
+    const createUserService = container.resolve(CreateUsersService)
+    const user = await createUserService.execute({ email, password, role })
+
+    return response.ok({
+      message: 'User created successfully',
+      success: true,
+      data: user,
+    })
   }
 
   public async show({ request, response }: HttpContextContract) {
-    const qs = request.qs()
+    const { email } = request.qs()
     const id = request.param('id')
 
-    var user = id ? await User.find(id) : undefined
+    const findUserService = container.resolve(FindUserService)
+    const user = await findUserService.execute({ id, email })
 
-    if (user) {
-      return response.ok(user)
-    }
-
-    var user = qs ? await User.findBy('email', qs.email) : undefined
-    return response.ok(user)
+    return response.ok({
+      message: 'User found successfully',
+      success: true,
+      data: user,
+    })
   }
 
   public async update({ request, response }: HttpContextContract) {
     const { id } = request.params()
     const data = request.body()
-    const user = await User.findOrFail(id)
-    await user.merge(data).save()
-    return response.ok(user)
+
+    const updateUserService = container.resolve(UpdateUsersService)
+    const user = await updateUserService.execute({ id, ...data })
+
+    return response.ok({
+      message: 'User updated successfully',
+      success: true,
+      data: user,
+    })
   }
 
   public async destroy({ request, response }: HttpContextContract) {
-    try {
-      const { id } = request.params()
-      const user = await User.findOrFail(id)
-      await user.softDelete()
-      return response.json({ success: true })
-    } catch {
-      return response.json({ success: false })
-    }
+    const { id } = request.params()
+
+    const deleteUserService = container.resolve(DeleteUsersService)
+    const user = await deleteUserService.execute(id)
+
+    return response.json({
+      message: 'User deleted successfully',
+      success: true,
+      data: user,
+    })
   }
 }
