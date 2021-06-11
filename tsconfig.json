@@ -12,6 +12,8 @@
       "Contracts/*": ["./contracts/*"],
       "Database/*": ["./database/*"]
     },
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "types": [
       "@adonisjs/core",
       "@adonisjs/repl",
