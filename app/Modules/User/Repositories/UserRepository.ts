@@ -1,6 +1,6 @@
 import { LucidModel, LucidRow } from '@ioc:Adonis/Lucid/Orm'
 
-import { ICreateUserDTO } from '../DTOS/ICreateUserDTO'
+import { ICreateUserDTO } from '../DTOs/ICreateUserDTO'
 import { IUserRepository } from '../Interfaces/IUserRepository'
 import { softDelete } from 'App/Shared/Services/LucidSoftDelete'
 
@@ -18,7 +18,7 @@ export default class UserRepository implements IUserRepository {
     return users
   }
 
-  public async create(data: Omit<ICreateUserDTO, 'id'>): Promise<LucidRow> {
+  public async create(data: ICreateUserDTO): Promise<LucidRow> {
     const newUser = await this.ormRepository.create(data)
     return newUser
   }
