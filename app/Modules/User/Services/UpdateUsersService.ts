@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe'
 import { LucidRow } from '@ioc:Adonis/Lucid/Orm'
-import { IUpdateUserDTO } from '../DTOS/IUpdateUserDTO'
+import { IUpdateUserDTO } from '../DTOs/IUpdateUserDTO'
 import { IUserRepository } from '../Interfaces/IUserRepository'
 
 @injectable()

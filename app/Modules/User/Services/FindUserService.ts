@@ -1,6 +1,6 @@
 import { LucidRow } from '@ioc:Adonis/Lucid/Orm'
 import { injectable, inject } from 'tsyringe'
-import { IFindUserDTO } from '../DTOS/IFindUserDTO'
+import { IFindUserDTO } from '../DTOs/IFindUserDTO'
 
 import { IUserRepository } from '../Interfaces/IUserRepository'
 

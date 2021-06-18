@@ -5,6 +5,7 @@ import { IUserRepository } from '../Interfaces/IUserRepository'
 import { softDelete } from 'App/Shared/Services/LucidSoftDelete'
 
 import User from '../Models/User'
+import { IUpdateUserDTO } from '../DTOs/IUpdateUserDTO'
 
 export default class UserRepository implements IUserRepository {
   private ormRepository: LucidModel
@@ -36,7 +37,7 @@ export default class UserRepository implements IUserRepository {
   public async update({
     id,
     ...data
-  }: ICreateUserDTO): Promise<LucidRow | null> {
+  }: IUpdateUserDTO): Promise<LucidRow | null> {
     const user = await this.ormRepository.findBy('id', id)
 
     if (user) {

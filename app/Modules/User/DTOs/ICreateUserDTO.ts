@@ -1,5 +1,5 @@
 export interface ICreateUserDTO {
-  id: string
+  id?: string
   email: string
   password: string
   role: string
