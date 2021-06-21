@@ -23,25 +23,30 @@ export default class Properties extends BaseSchema {
       table
         .enum('public_type', ['STANDARD', 'PREMIUM', 'SUPER_PREMIUM'])
         .defaultTo('STANDARD')
-      table.double('property_administration_fee').comment('condomínio')
-      table.double('yearly_tax').comment('IPTU')
+      table
+        .double('property_administration_fee')
+        .comment('condomínio')
+        .nullable()
+      table.double('yearly_tax').comment('IPTU').nullable()
       table.text('description')
       table.string('property_type')
-      table.string('living_area')
-      table.double('living_area_unit')
-      table.string('lot_area')
-      table.double('lot_area_unit')
-      table.json('features')
-      table.json('warranties')
-      table.integer('bathrooms')
-      table.integer('bedrooms')
-      table.integer('garage')
-      table.integer('suites')
-      table.enum('usage_type', [
-        'Residential',
-        'Commercial',
-        'Residential / Commercial',
-      ])
+      table.string('living_area').defaultTo(0)
+      table.double('living_area_unit').defaultTo('square metres')
+      table.string('lot_area').defaultTo(0)
+      table.double('lot_area_unit').defaultTo('square metres')
+      table.json('features').nullable()
+      table.json('warranties').nullable()
+      table.integer('bathrooms').defaultTo(0)
+      table.integer('bedrooms').defaultTo(0)
+      table.integer('garage').defaultTo(0)
+      table.integer('suites').defaultTo(0)
+      table
+        .enum('usage_type', [
+          'Residential',
+          'Commercial',
+          'Residential / Commercial',
+        ])
+        .defaultTo('Residential')
       table.integer('year_built')
       table.timestamp('created_at', { useTz: true }).notNullable()
       table.timestamp('updated_at', { useTz: true }).notNullable()
