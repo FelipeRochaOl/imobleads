@@ -5,4 +5,4 @@ Route.group(() => {
   Route.resource('contacts', 'ContactController').apiOnly()
 })
   .prefix('api')
-  .middleware(['api', 'auth'])
+  .middleware(['auth'])
