@@ -1,4 +1,7 @@
 import 'App/Shared/Container'
+import 'App/Modules/Client/Routes'
 import 'App/Modules/Health/Routes'
+import 'App/Modules/Immobile/Routes'
+import 'App/Modules/Portal/Routes'
 import 'App/Modules/Session/Routes'
 import 'App/Modules/User/Routes'
