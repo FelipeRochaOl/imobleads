@@ -1,4 +1,5 @@
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
+import { IResponse } from 'App/Shared/Interfaces/IResponse'
 
 export default class AppProvider {
   constructor(protected app: ApplicationContract) {}
@@ -8,7 +9,11 @@ export default class AppProvider {
   }
 
   public async boot() {
-    // IoC container is ready
+    const Response = this.app.container.use('Adonis/Core/Response')
+
+    Response.macro('standart', function (messages: IResponse) {
+      return messages
+    })
   }
 
   public async ready() {
