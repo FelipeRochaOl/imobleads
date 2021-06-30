@@ -15,6 +15,9 @@ import PortalRepository from 'App/Modules/Portal/Repositories/PortalRepository'
 import { IContactRepository } from 'App/Modules/Client/Interfaces/IContactRepository'
 import ContactRepository from 'App/Modules/Client/Repositories/ContactRepository'
 
+import LocationRepository from 'App/Modules/Client/Repositories/LocationRepository'
+import { ILocationRepository } from 'App/Modules/Client/Interfaces/ILocationRepository'
+
 container.registerSingleton<IUserRepository>('UserRepository', UserRepository)
 
 container.registerSingleton<IClientRepository>(
@@ -35,4 +38,9 @@ container.registerSingleton<IPortalRepository>(
 container.registerSingleton<IContactRepository>(
   'ContactRepository',
   ContactRepository
+)
+
+container.registerSingleton<ILocationRepository>(
+  'LocationRepository',
+  LocationRepository
 )

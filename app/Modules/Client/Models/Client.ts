@@ -4,6 +4,8 @@ import {
   beforeFetch,
   beforeFind,
   column,
+  hasMany,
+  HasMany,
   HasOne,
   hasOne,
 } from '@ioc:Adonis/Lucid/Orm'
@@ -14,6 +16,7 @@ import {
 } from 'App/Shared/Services/LucidSoftDelete'
 
 import User from 'App/Modules/User/Models/User'
+import Contact from './Contact'
 
 export default class Client extends BaseModel {
   @column({ isPrimary: true })
