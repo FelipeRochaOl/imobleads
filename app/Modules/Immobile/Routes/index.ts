@@ -1,7 +1,10 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
-  Route.resource('properties', 'ImmobileController').apiOnly()
+  Route.resource(
+    'properties',
+    'Immobile/Controllers/ImmobileController'
+  ).apiOnly()
 })
   .prefix('api')
   .middleware(['auth'])
