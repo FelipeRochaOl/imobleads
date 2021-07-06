@@ -10,7 +10,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 
   public async handle(error: any, ctx: HttpContextContract) {
     const errorMessage: IResponseError = {
-      message: 'Error processing your request',
+      message: error.message,
       success: false,
     }
 
