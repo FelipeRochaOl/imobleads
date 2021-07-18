@@ -38,7 +38,8 @@
   "aceProviders": ["@adonisjs/repl"],
   "namespaces": {
     "models": "App/Modules",
-    "middleware": "App/Modules",
+    "middlewares": "App/Modules",
+    "policies": "App/Modules",
     "exceptions": "App/Exceptions",
     "validators": "App/Modules",
     "httpControllers": "App/Modules",
