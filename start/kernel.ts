@@ -5,4 +5,6 @@ Server.middleware.registerNamed({
   silentAuth: () => import('App/Modules/Session/Middlewares/SilentAuth'),
   userAuthorization: () =>
     import('App/Modules/User/Middlewares/UserAuthorization'),
+  clientAuthorization: () =>
+    import('App/Modules/Client/Middleware/ClientAuthorization'),
 })
