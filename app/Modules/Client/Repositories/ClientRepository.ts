@@ -3,24 +3,43 @@ import { IClientRepository } from '../Interfaces/IClientRepository'
 import Client from '../Models/Client'
 
 export default class ClientRepository implements IClientRepository {
-  public async findAll(): Promise<Client[]> {
-    return await Client.all()
+  public async findAll(id: number): Promise<Client[]> {
+    return await Client.query().where('belongs_to_the_client_id', id)
   }
 
   public async create(data: IClientDTO): Promise<Client> {
     return await Client.create(data)
   }
 
-  public async findById(id: number): Promise<Client | null> {
-    return await Client.findBy('id', id)
+  public async findById({ realtor_id, client_id }): Promise<Client[]> {
+    return await Client.query()
+      .where('id', client_id)
+      .where('belongs_to_the_client_id', realtor_id)
+  }
+
+  public async findByUniqueIdentification(data) {
+    const [column] = Object.keys(data)
+    const [value] = Object.values<string>(data)
+    const [client] = await Client.query().where(column, value).count(column)
+    return client
   }
 
   public async update({
     id,
+    belongs_to_the_client_id,
     ...data
   }: Partial<IClientDTO>): Promise<Client | undefined> {
-    const client = await Client.findBy('id', id)
-    return await client?.merge(data).save()
+    if (!id || !belongs_to_the_client_id) return
+
+    const [client] = await Client.query()
+      .where('id', id)
+      .where('belongs_to_the_client_id', belongs_to_the_client_id)
+
+    if (client instanceof Client) {
+      return await client.merge(data).save()
+    }
+
+    return client
   }
 
   public async delete(id: number): Promise<Client | null> {

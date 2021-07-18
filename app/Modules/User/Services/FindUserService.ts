@@ -1,26 +1,32 @@
-import { LucidRow } from '@ioc:Adonis/Lucid/Orm'
 import { injectable, inject } from 'tsyringe'
 import { IFindUserDTO } from '../DTOs/IFindUserDTO'
 
 import { IUserRepository } from '../Interfaces/IUserRepository'
+import User from '../Models/User'
 
 @injectable()
 export default class FindUserService {
-  private findUser: LucidRow | null
-
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository
   ) {}
 
-  public async execute({ email, id }: IFindUserDTO): Promise<LucidRow | null> {
-    this.findUser = email ? await this.userRepository.findByEmail(email) : null
-    this.findUser = id ? await this.userRepository.findById(id) : null
+  public async execute({ email, id }: IFindUserDTO): Promise<User> {
+    let findUser: User[] = []
 
-    if (!this.findUser) {
-      throw new Error("We didn't find any users with this e-mail")
+    if (email) {
+      findUser = await this.userRepository.findByEmail(email)
     }
 
-    return this.findUser
+    if (id) {
+      findUser = await this.userRepository.findById(id)
+    }
+
+    if (!findUser || !findUser.length) {
+      throw new Error("We didn't find any users with this id or e-mail")
+    }
+
+    const [user] = findUser
+    return user
   }
 }

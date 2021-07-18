@@ -11,7 +11,11 @@ export default class DeleteClientsService {
     private clientRepository: IClientRepository
   ) {}
 
-  public async execute(id: number): Promise<Client> {
+  public async execute(id: number | undefined): Promise<Client> {
+    if (!id) {
+      throw new Error('Parameters were not sent correctly')
+    }
+
     const client = await this.clientRepository.delete(id)
 
     if (!client) {

@@ -15,9 +15,9 @@ export default class Clients extends BaseSchema {
         .nullable()
         .comment('Cliente pertence à qual cliente(imobiliária/corretor)?')
       table.string('name')
-      table.string('CPF').nullable()
-      table.string('CNPJ').nullable()
-      table.string('CRECI').nullable()
+      table.string('cpf').unique().nullable()
+      table.string('cnpj').unique().nullable()
+      table.string('creci').unique().nullable()
       table
         .enum('type', ['Corretor', 'Imobiliária', 'Cliente'])
         .defaultTo('Cliente')

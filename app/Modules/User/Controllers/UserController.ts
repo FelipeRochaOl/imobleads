@@ -12,7 +12,7 @@ export default class UserController {
     const findAllUsersServices = container.resolve(FindAllUsersServices)
     const users = await findAllUsersServices.execute()
 
-    return response.ok({
+    return response.standart({
       message: 'User list found successfully',
       success: true,
       data: users,
@@ -25,7 +25,7 @@ export default class UserController {
     const createUserService = container.resolve(CreateUsersService)
     const user = await createUserService.execute({ email, password, role })
 
-    return response.ok({
+    return response.standart({
       message: 'User created successfully',
       success: true,
       data: user,
@@ -39,7 +39,7 @@ export default class UserController {
     const findUserService = container.resolve(FindUserService)
     const user = await findUserService.execute({ id, email })
 
-    return response.ok({
+    return response.standart({
       message: 'User found successfully',
       success: true,
       data: user,
@@ -53,7 +53,7 @@ export default class UserController {
     const updateUserService = container.resolve(UpdateUsersService)
     const user = await updateUserService.execute({ id, ...data })
 
-    return response.ok({
+    return response.standart({
       message: 'User updated successfully',
       success: true,
       data: user,

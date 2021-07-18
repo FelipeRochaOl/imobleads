@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe'
 
-import { IClientDTO } from '../DTOs/IClientDTO'
 import { IClientRepository } from '../Interfaces/IClientRepository'
+import { IClientUpdateData } from '../Interfaces/IClientUpdateData'
 
 import Client from '../Models/Client'
 
@@ -12,7 +12,8 @@ export default class UpdateClientsService {
     private clientRepository: IClientRepository
   ) {}
 
-  public async execute(data: Partial<IClientDTO>): Promise<Client> {
+  public async execute({ auth, data }: IClientUpdateData): Promise<Client> {
+    data.belongs_to_the_client_id = auth.user?.client.id
     const client = await this.clientRepository.update(data)
 
     if (!client) {

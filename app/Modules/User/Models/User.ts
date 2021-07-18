@@ -8,12 +8,16 @@ import {
   BaseModel,
   beforeFind,
   beforeFetch,
+  hasOne,
+  HasOne,
 } from '@ioc:Adonis/Lucid/Orm'
 
 import {
   softDelete,
   softDeleteQuery,
 } from 'App/Shared/Services/LucidSoftDelete'
+
+import Client from 'App/Modules/Client/Models/Client'
 
 export default class User extends BaseModel {
   public static selfAssignPrimaryKey = true
@@ -41,6 +45,11 @@ export default class User extends BaseModel {
 
   @column.dateTime({ serializeAs: null })
   public deletedAt: DateTime
+
+  @hasOne(() => Client, {
+    localKey: 'id', // id column on "User" model
+  })
+  public client: HasOne<typeof Client>
 
   @beforeSave()
   public static async hashPassword(user: User) {

@@ -1,7 +1,14 @@
 import Hash from '@ioc:Adonis/Core/Hash'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import User from 'App/Modules/User/Models/User'
+import { container } from 'tsyringe'
+
 import { IResponseError } from 'App/Shared/Interfaces/IResponseError'
+
+import User from 'App/Modules/User/Models/User'
+
+import FindUserService from 'App/Modules/User/Services/FindUserService'
+import GenerateTokenService from '../Services/GenerateTokenService'
+import { ICreateSessionDTO } from '../DTOs/ICreateSessionDTO'
 
 export default class SessionsController {
   public async store({ auth, request, response }: HttpContextContract) {
@@ -9,20 +16,21 @@ export default class SessionsController {
       message: 'Invalid credentials',
       success: false,
     }
-    const { email, password } = request.body()
-    const user = await User.findBy('email', email)
+    const data = request.body()
+    const { email, password } = data as ICreateSessionDTO
+
+    const findUserService = container.resolve(FindUserService)
+    const user = await findUserService.execute({ email })
 
     if (!user) {
       return response.unauthorized(responseError)
     }
 
-    const compareHash = await Hash.verify(user.password, password)
-    if (!compareHash) {
-      return response.unauthorized(responseError)
-    }
-
-    const tokenJson = await auth.use('api').attempt(email, password, {
-      expiresIn: '1days',
+    const generateTokenService = new GenerateTokenService()
+    const tokenJson = await generateTokenService.execute({
+      auth,
+      user,
+      password,
     })
 
     return response.ok(tokenJson)

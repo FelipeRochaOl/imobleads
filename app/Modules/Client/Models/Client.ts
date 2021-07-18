@@ -3,6 +3,8 @@ import {
   BaseModel,
   beforeFetch,
   beforeFind,
+  BelongsTo,
+  belongsTo,
   column,
   hasMany,
   HasMany,
@@ -16,41 +18,33 @@ import {
 } from 'App/Shared/Services/LucidSoftDelete'
 
 import User from 'App/Modules/User/Models/User'
-import Contact from './Contact'
 
 export default class Client extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public user_id: string
+  public userId: string
 
-  @hasOne(() => User, {
-    foreignKey: 'fk_clients_users',
-    localKey: 'user_id',
+  @belongsTo(() => User, {
+    localKey: 'id', // id column on "User" model
   })
-  public userId: HasOne<typeof User>
+  public user: BelongsTo<typeof User>
 
   @column()
-  public belongs_to_the_client_id: number
-
-  @hasOne(() => Client, {
-    foreignKey: 'fk_belongs_to_client',
-    localKey: 'belongs_to_the_client_id',
-  })
-  public belongsToTheClientId: HasOne<typeof Client>
+  public belongsToTheClientId: number
 
   @column()
   public name: string
 
   @column()
-  public CPF: string
+  public cpf: string
 
   @column()
-  public CNPJ: string
+  public cnpj: string
 
   @column()
-  public CRECI: string
+  public creci: string
 
   @column()
   public type: string

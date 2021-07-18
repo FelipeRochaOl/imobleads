@@ -1,5 +1,3 @@
-import { LucidModel, LucidRow } from '@ioc:Adonis/Lucid/Orm'
-
 import { ICreateUserDTO } from '../DTOs/ICreateUserDTO'
 import { IUserRepository } from '../Interfaces/IUserRepository'
 import { softDelete } from 'App/Shared/Services/LucidSoftDelete'
@@ -8,37 +6,24 @@ import User from '../Models/User'
 import { IUpdateUserDTO } from '../DTOs/IUpdateUserDTO'
 
 export default class UserRepository implements IUserRepository {
-  private ormRepository: LucidModel
-
-  constructor() {
-    this.ormRepository = User
+  public async findAll(): Promise<User[]> {
+    return await User.all()
   }
 
-  public async findAll(): Promise<LucidRow[]> {
-    const users = await this.ormRepository.all()
-    return users
+  public async create(data: ICreateUserDTO): Promise<User> {
+    return await User.create(data)
   }
 
-  public async create(data: ICreateUserDTO): Promise<LucidRow> {
-    const newUser = await this.ormRepository.create(data)
-    return newUser
+  public async findById(id: string): Promise<User[]> {
+    return await User.query().preload('client').where('id', id)
   }
 
-  public async findById(id: string): Promise<LucidRow | null> {
-    const findUser = await this.ormRepository.findBy('id', id)
-    return findUser
+  public async findByEmail(email: string): Promise<User[]> {
+    return await User.query().preload('client').where('email', email)
   }
 
-  public async findByEmail(email: string): Promise<LucidRow | null> {
-    const findUser = await this.ormRepository.findBy('email', email)
-    return findUser
-  }
-
-  public async update({
-    id,
-    ...data
-  }: IUpdateUserDTO): Promise<LucidRow | null> {
-    const user = await this.ormRepository.findBy('id', id)
+  public async update({ id, ...data }: IUpdateUserDTO): Promise<User | null> {
+    const user = await User.findBy('id', id)
 
     if (user) {
       await user.merge(data).save()
@@ -47,8 +32,8 @@ export default class UserRepository implements IUserRepository {
     return user
   }
 
-  public async delete(id: string): Promise<LucidRow | null> {
-    const user = await this.ormRepository.findBy('id', id)
+  public async delete(id: string): Promise<User | null> {
+    const user = await User.findBy('id', id)
 
     if (user) {
       await softDelete(user)

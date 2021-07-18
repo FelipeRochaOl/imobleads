@@ -1,12 +1,12 @@
-import { LucidRow } from '@ioc:Adonis/Lucid/Orm'
 import { ICreateUserDTO } from '../DTOs/ICreateUserDTO'
 import { IUpdateUserDTO } from '../DTOs/IUpdateUserDTO'
+import User from '../Models/User'
 
 export interface IUserRepository {
-  findAll(): Promise<LucidRow[]>
-  create(data: ICreateUserDTO): Promise<LucidRow>
-  findById(id: string): Promise<LucidRow | null>
-  findByEmail(email: string): Promise<LucidRow | null>
-  update(data: IUpdateUserDTO): Promise<LucidRow | null>
-  delete(id: string): Promise<LucidRow | null>
+  findAll(): Promise<User[]>
+  create(data: ICreateUserDTO): Promise<User>
+  findById(id: string): Promise<User[]>
+  findByEmail(email: string): Promise<User[]>
+  update(data: IUpdateUserDTO): Promise<User | null>
+  delete(id: string): Promise<User | null>
 }

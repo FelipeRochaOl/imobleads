@@ -10,22 +10,26 @@ import UpdateClientsService from '../Services/UpdateClientsService'
 import DeleteClientsService from '../Services/DeleteClientsService'
 
 export default class ClientController {
-  public async index({ response }: HttpContextContract) {
+  public async index({ auth, response }: HttpContextContract) {
     const listClientService = container.resolve(ListAllClientsService)
-    const client = await listClientService.execute()
+    const client = await listClientService.execute(auth)
 
     return response.standart({
-      message: 'No customers found',
+      message: 'Customers list',
       success: true,
       data: client,
     })
   }
 
-  public async store({ request, response }: HttpContextContract) {
-    const data: Record<'client', IClientDTO> = request.body()
+  public async store({ auth, request, response }: HttpContextContract) {
+    const belongs_to_the_client_id = auth.user?.client.id
+    const data: Partial<IClientDTO> = request.body()
 
     const createClientService = container.resolve(CreateClientsService)
-    const client = await createClientService.execute(data.client)
+    const client = await createClientService.execute({
+      belongs_to_the_client_id,
+      ...data,
+    })
 
     return response.standart({
       message: 'Customer saved successfully',
@@ -34,11 +38,12 @@ export default class ClientController {
     })
   }
 
-  public async show({ request, response }: HttpContextContract) {
-    const id: Record<'client', number> = request.params()
+  public async show({ auth, request, response }: HttpContextContract) {
+    const params = request.params()
+    const { id } = params as IClientDTO
 
     const findClientService = container.resolve(FindClientService)
-    const client = await findClientService.execute(id.client)
+    const client = await findClientService.execute({ auth, client_id: id })
 
     return response.standart({
       message: 'Customer found successfully',
@@ -47,11 +52,15 @@ export default class ClientController {
     })
   }
 
-  public async update({ request, response }: HttpContextContract) {
-    const data: Record<'client', Partial<IClientDTO>> = request.body()
+  public async update({ auth, request, response }: HttpContextContract) {
+    const params = request.params()
+    const { id } = params as IClientDTO
+
+    let data: Partial<IClientDTO> = request.body()
+    data.id = id
 
     const updateClientService = container.resolve(UpdateClientsService)
-    const client = await updateClientService.execute(data.client)
+    const client = await updateClientService.execute({ auth, data })
 
     return response.standart({
       message: 'Customer updated successfully',
@@ -61,10 +70,11 @@ export default class ClientController {
   }
 
   public async destroy({ request, response }: HttpContextContract) {
-    const id: Record<'client', number> = request.params()
+    const params = request.params()
+    const { id } = params as IClientDTO
 
     const deleteClientService = container.resolve(DeleteClientsService)
-    const client = await deleteClientService.execute(id.client)
+    const client = await deleteClientService.execute(id)
 
     return response.standart({
       message: 'Customer deleted successful',

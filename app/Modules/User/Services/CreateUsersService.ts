@@ -1,8 +1,8 @@
-import { LucidRow } from '@ioc:Adonis/Lucid/Orm'
 import { injectable, inject } from 'tsyringe'
 
 import { ICreateUserDTO } from '../DTOs/ICreateUserDTO'
 import { IUserRepository } from '../Interfaces/IUserRepository'
+import User from '../Models/User'
 
 @injectable()
 export default class CreateUsersService {
@@ -11,7 +11,7 @@ export default class CreateUsersService {
     private userRepository: IUserRepository
   ) {}
 
-  public async execute(data: ICreateUserDTO): Promise<LucidRow> {
+  public async execute(data: ICreateUserDTO): Promise<User> {
     const users = this.userRepository.create(data)
 
     if (!users) {

@@ -1,3 +1,4 @@
+import { AuthContract } from '@ioc:Adonis/Addons/Auth'
 import { inject, injectable } from 'tsyringe'
 
 import { IClientRepository } from '../Interfaces/IClientRepository'
@@ -11,8 +12,12 @@ export default class ListAllClientsService {
     private clientRepository: IClientRepository
   ) {}
 
-  public async execute(): Promise<Client[]> {
-    const clients = await this.clientRepository.findAll()
+  public async execute(auth: AuthContract): Promise<Client[]> {
+    if (!auth.user) {
+      throw new Error('No user were found')
+    }
+
+    const clients = await this.clientRepository.findAll(auth.user.client.id)
 
     if (!clients) {
       throw new Error('No customers were found')

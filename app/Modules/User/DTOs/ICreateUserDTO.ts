@@ -2,5 +2,5 @@ export interface ICreateUserDTO {
   id?: string
   email: string
   password: string
-  role: string
+  role?: 'admin' | 'corretor' | 'imobiliaria' | 'cliente'
 }

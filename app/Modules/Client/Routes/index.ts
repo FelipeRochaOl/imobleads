@@ -6,4 +6,4 @@ Route.group(() => {
   Route.resource('locations', 'Client/Controllers/LocationController').apiOnly()
 })
   .prefix('api')
-  .middleware(['auth'])
+  .middleware(['auth', 'clientAuthorization'])
