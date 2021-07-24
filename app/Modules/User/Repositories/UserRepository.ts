@@ -16,6 +16,7 @@ export default class UserRepository implements IUserRepository {
     if (user instanceof User) {
       let clientData = JSON.parse(data.client)
       clientData.user_id = user.id
+      clientData.type = this.convertClientType(user.role)
       const client = await user.related('client').create(clientData)
 
       if (!client) {
@@ -53,5 +54,16 @@ export default class UserRepository implements IUserRepository {
     }
 
     return user
+  }
+
+  protected convertClientType(type: string) {
+    switch (type) {
+      case 'corretor':
+        return 'Corretor'
+      case 'imobiliaria':
+        return 'Imobiliária'
+      default:
+        return 'Cliente'
+    }
   }
 }

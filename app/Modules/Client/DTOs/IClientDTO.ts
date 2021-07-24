@@ -6,4 +6,5 @@ export interface IClientDTO {
   cpf?: string
   cnpj?: string
   creci?: string
+  type?: 'Corretor' | 'Imobiliária' | 'Cliente'
 }
