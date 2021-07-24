@@ -3,8 +3,8 @@ import { IContactRepository } from '../Interfaces/IContactRepository'
 import Contact from '../Models/Contact'
 
 export default class ContactRepository implements IContactRepository {
-  public async findAll(): Promise<Contact[]> {
-    return await Contact.all()
+  public async findAll(client_id: number): Promise<Contact[]> {
+    return await Contact.query().where('client_id', client_id)
   }
 
   public async create(data: IContactDTO): Promise<Contact> {

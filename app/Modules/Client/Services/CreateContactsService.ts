@@ -12,8 +12,12 @@ export default class CreateContactsService {
     private contactRepository: IContactRepository
   ) {}
 
-  public async execute(data: IContactDTO): Promise<Contact> {
-    const contact = await this.contactRepository.create(data)
+  public async execute({ client_id, ...data }: IContactDTO): Promise<Contact> {
+    if (!client_id) {
+      throw new Error('No params ID to customer in request')
+    }
+
+    const contact = await this.contactRepository.create({ client_id, ...data })
 
     if (!contact) {
       throw new Error('Unable to register the contact')

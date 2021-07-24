@@ -12,8 +12,20 @@ export default class UpdateContactsService {
     private contactRepository: IContactRepository
   ) {}
 
-  public async execute(data: Partial<IContactDTO>): Promise<Contact> {
-    const contact = await this.contactRepository.update(data)
+  public async execute({
+    id,
+    client_id,
+    ...data
+  }: Partial<IContactDTO>): Promise<Contact> {
+    if (!client_id || !id) {
+      throw new Error('No params ID to customer in request')
+    }
+
+    const contact = await this.contactRepository.update({
+      id,
+      client_id,
+      ...data,
+    })
 
     if (!contact) {
       throw new Error('Unable to update the contact')

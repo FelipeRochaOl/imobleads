@@ -11,8 +11,12 @@ export default class ListAllContactsService {
     private contactRepository: IContactRepository
   ) {}
 
-  public async execute(): Promise<Contact[]> {
-    const contacts = await this.contactRepository.findAll()
+  public async execute(client_id: number | undefined): Promise<Contact[]> {
+    if (!client_id) {
+      throw new Error('No params ID to customer in request')
+    }
+
+    const contacts = await this.contactRepository.findAll(client_id)
 
     if (!contacts) {
       throw new Error('No customers were found')

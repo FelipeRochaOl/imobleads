@@ -10,9 +10,10 @@ import UpdateContactsService from '../Services/UpdateContactsService'
 import DeleteContactsService from '../Services/DeleteContactsService'
 
 export default class ContactController {
-  public async index({ response }: HttpContextContract) {
+  public async index({ response, request }: HttpContextContract) {
+    const client_id: number | undefined = request.param('client_id')
     const listContactService = container.resolve(ListAllContactsService)
-    const contact = await listContactService.execute()
+    const contact = await listContactService.execute(client_id)
 
     return response.standart({
       message: 'No contacts found',
@@ -22,10 +23,12 @@ export default class ContactController {
   }
 
   public async store({ request, response }: HttpContextContract) {
-    const data: Record<'contact', IContactDTO> = request.body()
+    const client_id: number | undefined = request.param('client_id')
+    const contactData = request.body()
+    const data = contactData as IContactDTO
 
     const createContactService = container.resolve(CreateContactsService)
-    const contact = await createContactService.execute(data.contact)
+    const contact = await createContactService.execute({ client_id, ...data })
 
     return response.standart({
       message: 'Contact saved successfully',
@@ -35,10 +38,11 @@ export default class ContactController {
   }
 
   public async show({ request, response }: HttpContextContract) {
-    const id: Record<'contact', number> = request.params()
+    const id: number | undefined = request.param('id')
+    const client_id: number | undefined = request.param('client_id')
 
     const findContactService = container.resolve(FindContactService)
-    const contact = await findContactService.execute(id.contact)
+    const contact = await findContactService.execute({ id, client_id })
 
     return response.standart({
       message: 'Contact found successfully',
@@ -48,10 +52,17 @@ export default class ContactController {
   }
 
   public async update({ request, response }: HttpContextContract) {
-    const data: Record<'contact', Partial<IContactDTO>> = request.body()
+    const id: number | undefined = request.param('id')
+    const client_id: number | undefined = request.param('client_id')
+    const contactData = request.body()
+    const data = contactData as IContactDTO
 
     const updateContactService = container.resolve(UpdateContactsService)
-    const contact = await updateContactService.execute(data.contact)
+    const contact = await updateContactService.execute({
+      id,
+      client_id,
+      ...data,
+    })
 
     return response.standart({
       message: 'Contact updated successfully',
@@ -61,10 +72,11 @@ export default class ContactController {
   }
 
   public async destroy({ request, response }: HttpContextContract) {
-    const id: Record<'contact', number> = request.params()
+    const id: number | undefined = request.param('id')
+    const client_id: number | undefined = request.param('client_id')
 
     const deleteContactService = container.resolve(DeleteContactsService)
-    const contact = await deleteContactService.execute(id.contact)
+    const contact = await deleteContactService.execute({ id, client_id })
 
     return response.standart({
       message: 'Contact deleted successful',
