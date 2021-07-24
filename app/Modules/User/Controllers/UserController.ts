@@ -20,10 +20,15 @@ export default class UserController {
   }
 
   public async store({ request, response }: HttpContextContract) {
-    const { email, password, role } = request.body()
+    const { email, password, role, client } = request.body()
 
     const createUserService = container.resolve(CreateUsersService)
-    const user = await createUserService.execute({ email, password, role })
+    const user = await createUserService.execute({
+      email,
+      password,
+      role,
+      client,
+    })
 
     return response.standart({
       message: 'User created successfully',

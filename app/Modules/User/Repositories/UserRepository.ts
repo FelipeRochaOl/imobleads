@@ -11,7 +11,20 @@ export default class UserRepository implements IUserRepository {
   }
 
   public async create(data: ICreateUserDTO): Promise<User> {
-    return await User.create(data)
+    const user = await User.create(data)
+
+    if (user instanceof User) {
+      let clientData = JSON.parse(data.client)
+      clientData.user_id = user.id
+      const client = await user.related('client').create(clientData)
+
+      if (!client) {
+        await user.delete()
+      }
+    }
+
+    const [newUser] = await this.findById(user.id)
+    return newUser
   }
 
   public async findById(id: string): Promise<User[]> {
