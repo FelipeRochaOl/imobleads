@@ -10,9 +10,10 @@ import UpdateLocationsService from '../Services/UpdateLocationsService'
 import DeleteLocationsService from '../Services/DeleteLocationsService'
 
 export default class LocationController {
-  public async index({ response }: HttpContextContract) {
+  public async index({ response, request }: HttpContextContract) {
+    const client_id: number | undefined = request.param('client_id')
     const listLocationService = container.resolve(ListAllLocationsService)
-    const location = await listLocationService.execute()
+    const location = await listLocationService.execute(client_id)
 
     return response.standart({
       message: 'No locations found',
@@ -22,10 +23,12 @@ export default class LocationController {
   }
 
   public async store({ request, response }: HttpContextContract) {
-    const data: Record<'location', ILocationDTO> = request.body()
+    const client_id: number | undefined = request.param('client_id')
+    const locationData = request.body()
+    const data = locationData as ILocationDTO
 
     const createLocationService = container.resolve(CreateLocationsService)
-    const location = await createLocationService.execute(data.location)
+    const location = await createLocationService.execute({ client_id, ...data })
 
     return response.standart({
       message: 'Location saved successfully',
@@ -35,10 +38,11 @@ export default class LocationController {
   }
 
   public async show({ request, response }: HttpContextContract) {
-    const id: Record<'location', number> = request.params()
+    const id: number | undefined = request.param('id')
+    const client_id: number | undefined = request.param('client_id')
 
     const findLocationService = container.resolve(FindLocationService)
-    const location = await findLocationService.execute(id.location)
+    const [location] = await findLocationService.execute({ id, client_id })
 
     return response.standart({
       message: 'Location found successfully',
@@ -48,10 +52,12 @@ export default class LocationController {
   }
 
   public async update({ request, response }: HttpContextContract) {
-    const data: Record<'location', Partial<ILocationDTO>> = request.body()
+    const client_id: number | undefined = request.param('client_id')
+    const locationData = request.body()
+    const data = locationData as Partial<ILocationDTO>
 
     const updateLocationService = container.resolve(UpdateLocationsService)
-    const location = await updateLocationService.execute(data.location)
+    const location = await updateLocationService.execute({ client_id, ...data })
 
     return response.standart({
       message: 'Location updated successfully',
@@ -61,10 +67,11 @@ export default class LocationController {
   }
 
   public async destroy({ request, response }: HttpContextContract) {
-    const id: Record<'location', number> = request.params()
+    const id: number | undefined = request.param('id')
+    const client_id: number | undefined = request.param('client_id')
 
     const deleteLocationService = container.resolve(DeleteLocationsService)
-    const location = await deleteLocationService.execute(id.location)
+    const location = await deleteLocationService.execute({ id, client_id })
 
     return response.standart({
       message: 'Location deleted successful',

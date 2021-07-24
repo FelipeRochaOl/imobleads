@@ -1,31 +1,49 @@
-import { ILocationDTO } from '../DTOs/ILocationDTO'
-import { ILocationRepository } from '../Interfaces/ILocationRepository'
+import {
+  ILocationDeleteDTO,
+  ILocationDTO,
+  ILocationUpdateDTO,
+} from '../DTOs/ILocationDTO'
+import {
+  IFindClient,
+  ILocationRepository,
+} from '../Interfaces/ILocationRepository'
 import Location from '../Models/Location'
 
 export default class LocationRepository implements ILocationRepository {
-  public async findAll(): Promise<Location[]> {
-    return await Location.all()
+  public async findAll(client_id: number): Promise<Location[]> {
+    return await Location.query().where('client_id', client_id)
   }
 
   public async create(data: ILocationDTO): Promise<Location> {
     return await Location.create(data)
   }
 
-  public async findById(id: number): Promise<Location | null> {
-    return await Location.findBy('id', id)
+  public async findById({
+    client_id,
+    id,
+  }: IFindClient): Promise<Location[] | null> {
+    return await Location.query().where('id', id).where('client_id', client_id)
   }
 
   public async update({
     id,
+    client_id,
     ...data
-  }: Partial<ILocationDTO>): Promise<Location | undefined> {
-    const contact = await Location.findBy('id', id)
-    return await contact?.merge(data).save()
+  }: ILocationUpdateDTO): Promise<Location | undefined> {
+    const [location] = await Location.query()
+      .where('id', id)
+      .where('client_id', client_id)
+    return await location?.merge(data).save()
   }
 
-  public async delete(id: number): Promise<Location | null> {
-    const contact = await Location.findBy('id', id)
-    contact?.softDelete()
-    return contact
+  public async delete({
+    client_id,
+    id,
+  }: ILocationDeleteDTO): Promise<Location | null> {
+    const [location] = await Location.query()
+      .where('id', id)
+      .where('client_id', client_id)
+    location?.softDelete()
+    return location
   }
 }

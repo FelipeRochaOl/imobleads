@@ -1,10 +1,15 @@
-import { ILocationDTO } from '../DTOs/ILocationDTO'
+import { ILocationDeleteDTO, ILocationDTO } from '../DTOs/ILocationDTO'
 import Location from '../Models/Location'
 
+export interface IFindClient {
+  id: number
+  client_id: number
+}
+
 export interface ILocationRepository {
-  findAll(): Promise<Location[]>
+  findAll(client_id: number): Promise<Location[]>
   create(data: ILocationDTO): Promise<Location>
-  findById(id: number): Promise<Location | null>
+  findById(data: IFindClient): Promise<Location[] | null>
   update(data: Partial<ILocationDTO>): Promise<Location | undefined>
-  delete(id: number): Promise<Location | null>
+  delete(data: ILocationDeleteDTO): Promise<Location | null>
 }

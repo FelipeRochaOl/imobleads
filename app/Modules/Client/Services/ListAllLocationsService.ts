@@ -11,8 +11,12 @@ export default class ListAllLocationsService {
     private locationRepository: ILocationRepository
   ) {}
 
-  public async execute(): Promise<Location[]> {
-    const locations = await this.locationRepository.findAll()
+  public async execute(client_id: number | undefined): Promise<Location[]> {
+    if (!client_id) {
+      throw new Error('No params ID to customer in request')
+    }
+
+    const locations = await this.locationRepository.findAll(client_id)
 
     if (!locations) {
       throw new Error('No customers were found')

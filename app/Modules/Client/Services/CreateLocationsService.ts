@@ -12,8 +12,18 @@ export default class CreateLocationsService {
     private locationRepository: ILocationRepository
   ) {}
 
-  public async execute(data: ILocationDTO): Promise<Location> {
-    const location = await this.locationRepository.create(data)
+  public async execute({
+    client_id,
+    ...data
+  }: ILocationDTO): Promise<Location> {
+    if (!client_id) {
+      throw new Error('No params ID to customer in request')
+    }
+
+    const location = await this.locationRepository.create({
+      client_id,
+      ...data,
+    })
 
     if (!location) {
       throw new Error('Unable to register the user')

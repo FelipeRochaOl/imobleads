@@ -12,8 +12,20 @@ export default class UpdateLocationsService {
     private locationRepository: ILocationRepository
   ) {}
 
-  public async execute(data: Partial<ILocationDTO>): Promise<Location> {
-    const location = await this.locationRepository.update(data)
+  public async execute({
+    client_id,
+    id,
+    ...data
+  }: Partial<ILocationDTO>): Promise<Location> {
+    if (!client_id || !id) {
+      throw new Error('No params ID to customer in request')
+    }
+
+    const location = await this.locationRepository.update({
+      client_id,
+      id,
+      ...data,
+    })
 
     if (!location) {
       throw new Error('Unable to update the location')
