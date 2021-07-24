@@ -17,7 +17,10 @@ export default class ListAllClientsService {
       throw new Error('No user were found')
     }
 
-    const clients = await this.clientRepository.findAll(auth.user.client.id)
+    const clients = await this.clientRepository.findAll({
+      realtor_id: auth.user.client.id,
+      isAdmin: auth.user.role === 'admin',
+    })
 
     if (!clients) {
       throw new Error('No customers were found')

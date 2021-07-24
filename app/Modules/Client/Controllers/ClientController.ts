@@ -22,7 +22,7 @@ export default class ClientController {
   }
 
   public async store({ auth, request, response }: HttpContextContract) {
-    const belongs_to_the_client_id = auth.user?.client.id
+    const belongs_to_the_client_id = auth.user?.client?.id ?? undefined
     const data: Partial<IClientDTO> = request.body()
 
     const createClientService = container.resolve(CreateClientsService)
@@ -39,9 +39,7 @@ export default class ClientController {
   }
 
   public async show({ auth, request, response }: HttpContextContract) {
-    const params = request.params()
-    const { id } = params as IClientDTO
-
+    const id = request.param('id', undefined)
     const findClientService = container.resolve(FindClientService)
     const client = await findClientService.execute({ auth, client_id: id })
 
@@ -53,9 +51,7 @@ export default class ClientController {
   }
 
   public async update({ auth, request, response }: HttpContextContract) {
-    const params = request.params()
-    const { id } = params as IClientDTO
-
+    const id = request.param('id', undefined)
     let data: Partial<IClientDTO> = request.body()
     data.id = id
 

@@ -27,6 +27,7 @@ export default class FindClientService {
     const client = await this.clientRepository.findById({
       realtor_id: auth.user.client.id,
       client_id,
+      isAdmin: auth.user.role === 'admin',
     })
 
     if (!client || !client.length) {

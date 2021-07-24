@@ -12,25 +12,21 @@ export default class ClientAuthorization {
     { bouncer, request, auth }: HttpContextContract,
     next: () => Promise<void>
   ) {
-    try {
-      const params = request.params()
-      const { id } = params as IClientDTO
+    const params = request.params()
+    const { id } = params as IClientDTO
+    await bouncer.with('ClientPolicy').authorize('before')
 
-      if (id) {
-        const [client] = await this.getClient({ auth, client_id: id })
-        await bouncer.with('ClientPolicy').authorize('delete', client)
-        await bouncer.with('ClientPolicy').authorize('update', client)
-        await bouncer.with('ClientPolicy').authorize('view', client)
-      }
-
-      await bouncer.with('ClientPolicy').authorize('before')
-      await bouncer.with('ClientPolicy').authorize('create')
-      await bouncer.with('ClientPolicy').authorize('viewList')
-
-      await next()
-    } catch (err) {
-      throw new Error('User is not authorized')
+    if (id) {
+      const [client] = await this.getClient({ auth, client_id: id })
+      await bouncer.with('ClientPolicy').authorize('delete', client)
+      await bouncer.with('ClientPolicy').authorize('update', client)
+      await bouncer.with('ClientPolicy').authorize('view', client)
     }
+
+    await bouncer.with('ClientPolicy').authorize('create')
+    await bouncer.with('ClientPolicy').authorize('viewList')
+
+    await next()
   }
 
   private async getClient({

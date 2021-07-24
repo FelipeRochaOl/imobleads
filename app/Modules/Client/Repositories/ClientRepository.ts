@@ -3,15 +3,23 @@ import { IClientRepository } from '../Interfaces/IClientRepository'
 import Client from '../Models/Client'
 
 export default class ClientRepository implements IClientRepository {
-  public async findAll(id: number): Promise<Client[]> {
-    return await Client.query().where('belongs_to_the_client_id', id)
+  public async findAll({ realtor_id, isAdmin }): Promise<Client[]> {
+    if (isAdmin) {
+      return await Client.query()
+    }
+
+    return await Client.query().where('belongs_to_the_client_id', realtor_id)
   }
 
   public async create(data: IClientDTO): Promise<Client> {
     return await Client.create(data)
   }
 
-  public async findById({ realtor_id, client_id }): Promise<Client[]> {
+  public async findById({ realtor_id, client_id, isAdmin }): Promise<Client[]> {
+    if (isAdmin) {
+      return await Client.query().where('id', client_id)
+    }
+
     return await Client.query()
       .where('id', client_id)
       .where('belongs_to_the_client_id', realtor_id)

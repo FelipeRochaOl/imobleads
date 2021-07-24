@@ -4,10 +4,16 @@ import Client from '../Models/Client'
 interface IFindClient {
   realtor_id: number
   client_id: number | undefined
+  isAdmin: boolean
+}
+
+interface IFindAllClients {
+  realtor_id: number
+  isAdmin: boolean
 }
 
 export interface IClientRepository {
-  findAll(id: number): Promise<Client[]>
+  findAll(data: IFindAllClients): Promise<Client[]>
   create(data: Partial<IClientDTO>): Promise<Client>
   findById(data: IFindClient): Promise<Client[]>
   findByUniqueIdentification([string]: any): Promise<Client>
