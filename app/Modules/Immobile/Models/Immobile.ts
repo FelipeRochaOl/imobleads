@@ -11,7 +11,7 @@ import {
 import {
   softDeleteQuery,
   softDelete,
-} from 'App/Shared/Services/LucidSoftDelete'
+} from 'App/Shared/Services/Database/LucidSoftDelete'
 
 import Client from 'App/Modules/Client/Models/Client'
 
