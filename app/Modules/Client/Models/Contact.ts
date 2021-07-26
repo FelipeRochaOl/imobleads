@@ -3,15 +3,17 @@ import {
   BaseModel,
   beforeFetch,
   beforeFind,
+  afterFetch,
   column,
   HasOne,
   hasOne,
 } from '@ioc:Adonis/Lucid/Orm'
+import Env from '@ioc:Adonis/Core/Env'
 
 import {
   softDeleteQuery,
   softDelete,
-} from 'App/Shared/Services/LucidSoftDelete'
+} from 'App/Shared/Services/Database/LucidSoftDelete'
 
 import Client from './Client'
 
@@ -44,6 +46,9 @@ export default class Contact extends BaseModel {
   public office_name: string
 
   @column()
+  public telephone: string
+
+  @column()
   public primary: boolean
 
   @column.dateTime({ autoCreate: true })
@@ -57,6 +62,19 @@ export default class Contact extends BaseModel {
 
   @beforeFind()
   public static softDeletesFind = softDeleteQuery
+
+  @afterFetch()
+  public static async getLogoUrl(contacts: Contact[]) {
+    if (Env.get('DRIVE_STORAGE') === 's3') {
+      await Promise.all(
+        contacts.map((contact) => {
+          return (contact.logo = `https://${Env.get(
+            'AWS_DEFAULT_BUCKET'
+          )}.s3.amazonaws.com/${contact.logo}`)
+        })
+      )
+    }
+  }
 
   @beforeFetch()
   public static softDeletesFetch = softDeleteQuery

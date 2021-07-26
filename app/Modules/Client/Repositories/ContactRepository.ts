@@ -8,6 +8,7 @@ export default class ContactRepository implements IContactRepository {
   }
 
   public async create(data: IContactDTO): Promise<Contact> {
+    delete data?.logoUpload
     return await Contact.create(data)
   }
 
@@ -19,6 +20,7 @@ export default class ContactRepository implements IContactRepository {
     id,
     ...data
   }: Partial<IContactDTO>): Promise<Contact | undefined> {
+    delete data?.logoUpload
     const contact = await Contact.findBy('id', id)
     return await contact?.merge(data).save()
   }

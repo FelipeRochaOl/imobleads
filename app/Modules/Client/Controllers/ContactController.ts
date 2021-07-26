@@ -25,7 +25,12 @@ export default class ContactController {
   public async store({ request, response }: HttpContextContract) {
     const client_id: number | undefined = request.param('client_id')
     const contactData = request.body()
-    const data = contactData as IContactDTO
+    let data = contactData as IContactDTO
+
+    data.logoUpload = request.file('logo', {
+      size: '2mb',
+      extnames: ['jpg', 'png'],
+    })
 
     const createContactService = container.resolve(CreateContactsService)
     const contact = await createContactService.execute({ client_id, ...data })
@@ -56,6 +61,11 @@ export default class ContactController {
     const client_id: number | undefined = request.param('client_id')
     const contactData = request.body()
     const data = contactData as IContactDTO
+
+    data.logoUpload = request.file('logo', {
+      size: '2mb',
+      extnames: ['jpg', 'png'],
+    })
 
     const updateContactService = container.resolve(UpdateContactsService)
     const contact = await updateContactService.execute({
