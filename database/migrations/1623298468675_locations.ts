@@ -7,7 +7,7 @@ export default class Locations extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.bigIncrements('id').unsigned().primary()
       table.bigInteger('client_id').nullable()
-      table.string('country')
+      table.string('country').defaultTo('Brasil')
       table.string('state')
       table.string('city')
       table.string('zone').nullable()

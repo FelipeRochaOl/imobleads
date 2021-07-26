@@ -52,12 +52,17 @@ export default class LocationController {
   }
 
   public async update({ request, response }: HttpContextContract) {
+    const id: number | undefined = request.param('id')
     const client_id: number | undefined = request.param('client_id')
     const locationData = request.body()
     const data = locationData as Partial<ILocationDTO>
 
     const updateLocationService = container.resolve(UpdateLocationsService)
-    const location = await updateLocationService.execute({ client_id, ...data })
+    const location = await updateLocationService.execute({
+      id,
+      client_id,
+      ...data,
+    })
 
     return response.standart({
       message: 'Location updated successfully',
