@@ -66,8 +66,7 @@ export default class ClientController {
   }
 
   public async destroy({ request, response }: HttpContextContract) {
-    const params = request.params()
-    const { id } = params as IClientDTO
+    const id = request.param('id', undefined)
 
     const deleteClientService = container.resolve(DeleteClientsService)
     const client = await deleteClientService.execute(id)
