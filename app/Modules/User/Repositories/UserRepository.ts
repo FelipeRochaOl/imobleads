@@ -1,9 +1,10 @@
 import { ICreateUserDTO } from '../DTOs/ICreateUserDTO'
 import { IUserRepository } from '../Interfaces/IUserRepository'
-import { softDelete } from 'App/Shared/Services/LucidSoftDelete'
+import { softDelete } from 'App/Shared/Services/Database/LucidSoftDelete'
 
 import User from '../Models/User'
 import { IUpdateUserDTO } from '../DTOs/IUpdateUserDTO'
+import UserUtils from '../Utils/UserUtils'
 
 export default class UserRepository implements IUserRepository {
   public async findAll(): Promise<User[]> {
@@ -16,7 +17,7 @@ export default class UserRepository implements IUserRepository {
     if (user instanceof User) {
       let clientData = JSON.parse(data.client)
       clientData.user_id = user.id
-      clientData.type = this.convertClientType(user.role)
+      clientData.type = UserUtils.convertClientType(user.role)
       const client = await user.related('client').create(clientData)
 
       if (!client) {
@@ -54,16 +55,5 @@ export default class UserRepository implements IUserRepository {
     }
 
     return user
-  }
-
-  protected convertClientType(type: string) {
-    switch (type) {
-      case 'corretor':
-        return 'Corretor'
-      case 'imobiliaria':
-        return 'Imobiliária'
-      default:
-        return 'Cliente'
-    }
   }
 }

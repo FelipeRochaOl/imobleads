@@ -5,7 +5,7 @@ import Client from 'App/Modules/Client/Models/Client'
 import FindClientService from 'App/Modules/Client/Services/FindClientService'
 
 import { IClientFindData } from 'App/Modules/Client/Interfaces/IClientFindData'
-import { IClientDTO } from 'App/Modules/Client/DTOs/IClientDTO'
+import { IClientDependences } from '../DTOs/IClientDTO'
 
 export default class ClientAuthorization {
   public async handle(
@@ -13,14 +13,16 @@ export default class ClientAuthorization {
     next: () => Promise<void>
   ) {
     const params = request.params()
-    const { id } = params as IClientDTO
+    const { id, client_id } = params as IClientDependences
     await bouncer.with('ClientPolicy').authorize('before')
 
     if (id) {
-      const [client] = await this.getClient({ auth, client_id: id })
+      const [client] = await this.getClient({ auth, client_id })
       await bouncer.with('ClientPolicy').authorize('delete', client)
       await bouncer.with('ClientPolicy').authorize('update', client)
       await bouncer.with('ClientPolicy').authorize('view', client)
+
+      return await next()
     }
 
     await bouncer.with('ClientPolicy').authorize('create')

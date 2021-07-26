@@ -1,3 +1,8 @@
+export interface IClientDependences {
+  id: number
+  client_id: number
+}
+
 export interface IClientDTO {
   id?: number
   user_id?: string

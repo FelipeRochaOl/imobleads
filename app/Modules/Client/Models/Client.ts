@@ -6,16 +6,12 @@ import {
   BelongsTo,
   belongsTo,
   column,
-  hasMany,
-  HasMany,
-  HasOne,
-  hasOne,
 } from '@ioc:Adonis/Lucid/Orm'
 
 import {
   softDeleteQuery,
   softDelete,
-} from 'App/Shared/Services/LucidSoftDelete'
+} from 'App/Shared/Services/Database/LucidSoftDelete'
 
 import User from 'App/Modules/User/Models/User'
 
