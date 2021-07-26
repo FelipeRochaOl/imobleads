@@ -1,5 +1,7 @@
 import { container } from 'tsyringe'
 
+import 'App/Shared/Container/Providers/index'
+
 import { IUserRepository } from 'App/Modules/User/Interfaces/IUserRepository'
 import UserRepository from 'App/Modules/User/Repositories/UserRepository'
 
