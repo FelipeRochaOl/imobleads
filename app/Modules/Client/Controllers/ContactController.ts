@@ -23,7 +23,7 @@ export default class ContactController {
   }
 
   public async store({ request, response }: HttpContextContract) {
-    const client_id: number | undefined = request.param('client_id')
+    const client_id = request.param('client_id')
     const contactData = request.body()
     let data = contactData as IContactDTO
 
@@ -43,8 +43,8 @@ export default class ContactController {
   }
 
   public async show({ request, response }: HttpContextContract) {
-    const id: number | undefined = request.param('id')
-    const client_id: number | undefined = request.param('client_id')
+    const id = request.param('id')
+    const client_id = request.param('client_id')
 
     const findContactService = container.resolve(FindContactService)
     const contact = await findContactService.execute({ id, client_id })
@@ -57,8 +57,8 @@ export default class ContactController {
   }
 
   public async update({ request, response }: HttpContextContract) {
-    const id: number | undefined = request.param('id')
-    const client_id: number | undefined = request.param('client_id')
+    const id = request.param('id')
+    const client_id = request.param('client_id')
     const contactData = request.body()
     const data = contactData as IContactDTO
 
@@ -82,8 +82,8 @@ export default class ContactController {
   }
 
   public async destroy({ request, response }: HttpContextContract) {
-    const id: number | undefined = request.param('id')
-    const client_id: number | undefined = request.param('client_id')
+    const id = request.param('id')
+    const client_id = request.param('client_id')
 
     const deleteContactService = container.resolve(DeleteContactsService)
     const contact = await deleteContactService.execute({ id, client_id })
