@@ -7,7 +7,7 @@ export default class PortalRepository implements IPortalRepository {
     return await Portal.all()
   }
 
-  public async create(data: IPortalDTO): Promise<Portal> {
+  public async create(data: Partial<IPortalDTO>): Promise<Portal> {
     return await Portal.create(data)
   }
 

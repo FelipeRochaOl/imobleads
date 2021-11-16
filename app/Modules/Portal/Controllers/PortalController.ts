@@ -21,11 +21,13 @@ export default class PortalController {
     })
   }
 
-  public async store({ request, response }: HttpContextContract) {
-    const data: Record<'portal', IPortalDTO> = request.body()
+  public async store({ auth, request, response }: HttpContextContract) {
+    const portalData = request.body()
+    let data = portalData as IPortalDTO
+    data.id_user = auth.user?.id ? auth.user.id : ''
 
     const createPortalService = container.resolve(CreatePortalsService)
-    const portal = await createPortalService.execute(data.portal)
+    const portal = await createPortalService.execute(data)
 
     return response.standart({
       message: 'Portal saved successfully',
@@ -35,10 +37,10 @@ export default class PortalController {
   }
 
   public async show({ request, response }: HttpContextContract) {
-    const id: Record<'portal', number> = request.params()
+    const id = request.param('id', undefined)
 
     const findPortalService = container.resolve(FindPortalService)
-    const portal = await findPortalService.execute(id.portal)
+    const portal = await findPortalService.execute(id)
 
     return response.standart({
       message: 'Portal found successfully',
@@ -47,11 +49,13 @@ export default class PortalController {
     })
   }
 
-  public async update({ request, response }: HttpContextContract) {
-    const data: Record<'portal', Partial<IPortalDTO>> = request.body()
+  public async update({ auth, request, response }: HttpContextContract) {
+    const portalData = request.body()
+    let data = portalData as IPortalDTO
+    data.id_user = auth.user?.id ? auth.user.id : ''
 
     const updatePortalService = container.resolve(UpdatePortalsService)
-    const portal = await updatePortalService.execute(data.portal)
+    const portal = await updatePortalService.execute(data)
 
     return response.standart({
       message: 'Portal updated successfully',
@@ -61,7 +65,7 @@ export default class PortalController {
   }
 
   public async destroy({ request, response }: HttpContextContract) {
-    const id: Record<'portal', number> = request.params()
+    const id = request.param('id', undefined)
 
     const deletePortalService = container.resolve(DeletePortalsService)
     const portal = await deletePortalService.execute(id.portal)
