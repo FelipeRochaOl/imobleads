@@ -15,7 +15,7 @@ export default class DeleteImmobilesService {
     const immobile = await this.portalRepository.delete(id)
 
     if (!immobile) {
-      throw new Error('Unable to delete the customer')
+      throw new Error('Unable to delete the immobile')
     }
 
     return immobile

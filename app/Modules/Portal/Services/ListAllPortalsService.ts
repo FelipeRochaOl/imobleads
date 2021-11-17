@@ -15,7 +15,7 @@ export default class ListAllPortalsService {
     const portals = await this.portalRepository.findAll()
 
     if (!portals) {
-      throw new Error('No customers were found')
+      throw new Error('No portals were found')
     }
 
     return portals

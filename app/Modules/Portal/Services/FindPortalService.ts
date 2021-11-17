@@ -15,7 +15,7 @@ export default class FindPortalService {
     const portal = await this.portalRepository.findById(id)
 
     if (!portal) {
-      throw new Error('Unable to find the customer')
+      throw new Error('Unable to find the portal')
     }
 
     return portal

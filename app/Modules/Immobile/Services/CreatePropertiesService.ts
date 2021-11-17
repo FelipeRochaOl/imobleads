@@ -16,7 +16,7 @@ export default class CreatePropertiesService {
     const portal = await this.portalRepository.create(data)
 
     if (!portal) {
-      throw new Error('Unable to register the portal')
+      throw new Error('Unable to register the immobile')
     }
 
     return portal

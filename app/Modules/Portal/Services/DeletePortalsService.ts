@@ -15,7 +15,7 @@ export default class DeletePortalsService {
     const portal = await this.portalRepository.delete(id)
 
     if (!portal) {
-      throw new Error('Unable to delete the customer')
+      throw new Error('Unable to delete the portal')
     }
 
     return portal

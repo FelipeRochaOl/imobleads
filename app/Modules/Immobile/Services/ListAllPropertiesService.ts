@@ -15,7 +15,7 @@ export default class ListAllImmobilesService {
     const portals = await this.portalRepository.findAll()
 
     if (!portals) {
-      throw new Error('No customers were found')
+      throw new Error('No immobile were found')
     }
 
     return portals

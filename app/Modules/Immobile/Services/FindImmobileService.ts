@@ -15,7 +15,7 @@ export default class FindImmobileService {
     const immobile = await this.portalRepository.findById(id)
 
     if (!immobile) {
-      throw new Error('Unable to find the customer')
+      throw new Error('Unable to find the immobile')
     }
 
     return immobile
