@@ -4,4 +4,4 @@ Route.group(() => {
   Route.resource('plans', 'Portal/Controllers/PlanController').apiOnly()
 })
   .prefix('api')
-  .middleware(['auth'])
+  .middleware(['auth', 'userAuthorization'])
