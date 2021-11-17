@@ -6,6 +6,8 @@ export default class UserPolicy extends BasePolicy {
     if (user && user.role === 'admin') {
       return true
     }
+
+    return false
   }
 
   public async viewAll() {
